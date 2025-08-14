@@ -4,6 +4,8 @@
 #include <string>
 #include <chrono>
 #include <stdexcept>
+#include <algorithm>
+#include <cctype>
 
 namespace lib {
 
@@ -42,9 +44,10 @@ class Message {
 
     static std::string FromImportanceLvlToStr(ImportanceLvl);
     static ImportanceLvl FromStrToImportanceLvl(const std::string&);
+    static const std::string MakeUppercaseStr(const std::string&);
 
-    void BuildInfo();
-    
+    void BuildInfoStr();
+    const std::string ConvertTimeToStr();
 };
 
 } // namespace lib
