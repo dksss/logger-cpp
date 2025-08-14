@@ -6,6 +6,8 @@
 #include <stdexcept>
 #include <algorithm>
 #include <cctype>
+// #include <regex>
+// #include <iomanip>
 
 #include "../constants/constants.h"
 
@@ -34,7 +36,7 @@ class Message {
     const std::string& get_info() const { return info_; };
     void set_lvl(const std::string&);
 
-  private:    
+  private:
     std::string msg_;
     ImportanceLvl lvl_;
     created_at timestamp_;

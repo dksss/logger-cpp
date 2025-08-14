@@ -15,7 +15,18 @@ Message::Message(const std::string& msg, const std::string& lvl) {
 }
 
 Message::Message(const std::string& info) : info_(info) {
+  // std::regex log_regex(R"(\[([0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9][0-9]:[0-9][0-9])\] \[(.*)\] (.*))");
+  // std::smatch data;
 
+  // if (!std::regex_match(info, data, log_regex)) {
+  //   throw std::invalid_argument("Invalid log.");
+  // }
+
+  // msg_ = data[2];
+  // lvl_ = FromStrToImportanceLvl(data[1]);
+  
+  // std::tm tm{};
+  // std::istringstream ss(data[0]);
 }
 
 void Message::set_lvl(const std::string& lvl) {
