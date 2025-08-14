@@ -11,7 +11,7 @@ Message::Message(const std::string& info) : info_(info) {
 
 }
 
-std::string Message::fromImportanceLvlToStr(ImportanceLvl lvl) {
+std::string Message::FromImportanceLvlToStr(ImportanceLvl lvl) {
   if (lvl == ImportanceLvl::kInfo) {
     return kInfoLabel;
   } else if (lvl == ImportanceLvl::kWarning) {
@@ -23,7 +23,7 @@ std::string Message::fromImportanceLvlToStr(ImportanceLvl lvl) {
   }
 }
 
-ImportanceLvl Message::fromStrToImportanceLvl(const std::string& lvl_str) {
+ImportanceLvl Message::FromStrToImportanceLvl(const std::string& lvl_str) {
   if (lvl_str == kInfoLabel) {
     return ImportanceLvl::kInfo;
   } else if (lvl_str == kWarningLabel) {
@@ -36,7 +36,7 @@ ImportanceLvl Message::fromStrToImportanceLvl(const std::string& lvl_str) {
   }
 }
 
-void Message::formating_info() {
+void Message::BuildInfo() {
 
 }
 

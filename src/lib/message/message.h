@@ -40,10 +40,10 @@ class Message {
     created_at timestamp_;
     std::string info_;
 
-    static std::string fromImportanceLvlToStr(ImportanceLvl);
-    static ImportanceLvl fromStrToImportanceLvl(const std::string&);
+    static std::string FromImportanceLvlToStr(ImportanceLvl);
+    static ImportanceLvl FromStrToImportanceLvl(const std::string&);
 
-    void formating_info();
+    void BuildInfo();
     
 };
 
