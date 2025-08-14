@@ -32,6 +32,7 @@ class Message {
     ~Message() = default;
 
     const std::string& get_info() const { return info_; };
+    void set_lvl(const std::string&);
 
   private:    
     std::string msg_;

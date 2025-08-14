@@ -18,6 +18,10 @@ Message::Message(const std::string& info) : info_(info) {
 
 }
 
+void Message::set_lvl(const std::string& lvl) {
+  lvl_ = FromStrToImportanceLvl(lvl);
+}
+
 std::string Message::FromImportanceLvlToStr(ImportanceLvl lvl) {
   if (lvl == ImportanceLvl::kInfo) {
     return Constants::kInfoLabel;
