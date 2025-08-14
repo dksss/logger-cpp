@@ -7,6 +7,8 @@
 #include <algorithm>
 #include <cctype>
 
+#include "../constants/constants.h"
+
 namespace lib {
 
 enum class ImportanceLvl {
@@ -20,8 +22,7 @@ class Message {
 
   public:
     explicit Message(const std::string& msg,
-        ImportanceLvl lvl = ImportanceLvl::kInfo,
-        created_at time = std::chrono::system_clock::now());
+        const std::string& lvl = Constants::kInfoLabel);
     explicit Message(const std::string&);
     Message() = delete;
     Message(const Message&) = delete;
@@ -32,11 +33,7 @@ class Message {
 
     const std::string& get_info() const { return info_; };
 
-  private:
-    static constexpr const char* kInfoLabel = "INFO";
-    static constexpr const char* kWarningLabel = "WARNING";
-    static constexpr const char* kErrorLabel = "ERROR";
-    
+  private:    
     std::string msg_;
     ImportanceLvl lvl_;
     created_at timestamp_;
@@ -44,13 +41,12 @@ class Message {
 
     static std::string FromImportanceLvlToStr(ImportanceLvl);
     static ImportanceLvl FromStrToImportanceLvl(const std::string&);
-    static const std::string MakeUppercaseStr(const std::string&);
+    static std::string MakeUppercaseStr(const std::string&);
 
     void BuildInfoStr();
     const std::string ConvertTimeToStr();
 };
 
 } // namespace lib
-
 
 #endif // LOGGER_SRC_LIB_MESSAGE_H_
