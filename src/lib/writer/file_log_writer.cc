@@ -19,4 +19,4 @@ void FileLogWriter::Write(const std::string& log) {
   file_ << log << std::endl;
 }
 
-} // namespace lib
+}  // namespace lib

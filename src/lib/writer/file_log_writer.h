@@ -18,6 +18,6 @@ class FileLogWriter : public LogWriterInterface {
   std::ofstream file_;
 };
 
-} // namespace lib
+}  // namespace lib
 
-#endif // LOGGER_SRC_LIB_WRITER_FILE_LOG_WRITER_H_
+#endif  // LOGGER_SRC_LIB_WRITER_FILE_LOG_WRITER_H_

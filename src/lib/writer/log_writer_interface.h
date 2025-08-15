@@ -12,6 +12,6 @@ class LogWriterInterface {
   virtual void Write(const std::string& log) = 0;
 };
 
-} // namespace lib
+}  // namespace lib
 
-#endif // LOGGER_SRC_LIB_WRITER_LOG_WRITER_INTERFACE_H_
+#endif  // LOGGER_SRC_LIB_WRITER_LOG_WRITER_INTERFACE_H_
