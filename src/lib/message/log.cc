@@ -1,50 +1,47 @@
-#include "message.h"
+#include "log.h"
 
 namespace lib {
 
-Message::Message(const std::string& msg, const std::string& lvl) {
+Log::Log(const std::string& msg, const std::string& lvl) {
   if (msg.empty()) {
     throw std::invalid_argument("Log with empty message is not valid.");
   }
 
   msg_ = msg;
-  lvl_ = FromStrToImportanceLvl(lvl);
+  type_ = FromStrToLogType(lvl);
   timestamp_ = std::chrono::system_clock::now();
 
   BuildInfoStr();
 }
 
-void Message::set_lvl(const std::string& lvl) {
-  lvl_ = FromStrToImportanceLvl(lvl);
-}
+void Log::set_lvl(const std::string& lvl) { type_ = FromStrToLogType(lvl); }
 
-std::string Message::FromImportanceLvlToStr(ImportanceLvl lvl) {
-  if (lvl == ImportanceLvl::kInfo) {
+std::string Log::FromLogTypeToStr(LogType lvl) {
+  if (lvl == LogType::kInfo) {
     return Constants::kInfoLabel;
-  } else if (lvl == ImportanceLvl::kWarning) {
+  } else if (lvl == LogType::kWarning) {
     return Constants::kWarningLabel;
-  } else if (lvl == ImportanceLvl::kError) {
+  } else if (lvl == LogType::kError) {
     return Constants::kErrorLabel;
   } else {
-    throw std::invalid_argument("Unknown type of ImportanceLvl.");
+    throw std::invalid_argument("Unknown type of LogType.");
   }
 }
 
-ImportanceLvl Message::FromStrToImportanceLvl(const std::string& lvl_str) {
+LogType Log::FromStrToLogType(const std::string& lvl_str) {
   std::string lvl_upper = MakeUppercaseStr(lvl_str);
   if (lvl_upper == Constants::kInfoLabel) {
-    return ImportanceLvl::kInfo;
+    return LogType::kInfo;
   } else if (lvl_upper == Constants::kWarningLabel) {
-    return ImportanceLvl::kWarning;
+    return LogType::kWarning;
   } else if (lvl_upper == Constants::kErrorLabel) {
-    return ImportanceLvl::kError;
+    return LogType::kError;
   } else {
-    throw std::invalid_argument("Unknown ImportanceLvl string: " + lvl_upper +
-                                ".");
+    throw std::invalid_argument("Unknown LogType string: " + lvl_upper + ".");
   }
 }
 
-std::string Message::MakeUppercaseStr(const std::string& other) {
+std::string Log::MakeUppercaseStr(const std::string& other) {
   std::string upper = other;
   std::transform(upper.begin(), upper.end(), upper.begin(),
                  [](char c) { return std::toupper(c); });
@@ -52,14 +49,14 @@ std::string Message::MakeUppercaseStr(const std::string& other) {
   return upper;
 }
 
-void Message::BuildInfoStr() {
+void Log::BuildInfoStr() {
   std::string time = ConvertTimeToStr();
-  std::string type = FromImportanceLvlToStr(lvl_);
+  std::string type = FromLogTypeToStr(type_);
 
   info_ = "[" + time + "] " + "[" + type + "] " + msg_;
 }
 
-const std::string Message::ConvertTimeToStr() {
+const std::string Log::ConvertTimeToStr() {
   std::time_t time_point = std::chrono::system_clock::to_time_t(timestamp_);
   std::tm* local_time = std::localtime(&time_point);
 
