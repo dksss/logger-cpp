@@ -1,5 +1,5 @@
-#ifndef LOGGER_SRC_LIB_CONSTANTS_H_
-#define LOGGER_SRC_LIB_CONSTANTS_H_
+#ifndef LOGGER_SRC_LIB_COMMON_CONSTANTS_H_
+#define LOGGER_SRC_LIB_COMMON_CONSTANTS_H_
 
 namespace lib {
 
@@ -12,4 +12,4 @@ class Constants {
 
 }  // namespace lib
 
-#endif  // LOGGER_SRC_LIB_CONSTANTS_H_
+#endif  // LOGGER_SRC_LIB_COMMON_CONSTANTS_H_

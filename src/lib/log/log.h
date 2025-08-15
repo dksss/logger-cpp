@@ -8,10 +8,9 @@
 #include <string>
 
 #include "../common/constants.h"
+#include "../common/log_type.h"
 
 namespace lib {
-
-enum class LogType { kInfo = 0, kWarning, kError };
 
 class Log {
   using created_at = std::chrono::system_clock::time_point;
