@@ -13,8 +13,7 @@ class Log {
   using created_at = std::chrono::system_clock::time_point;
 
  public:
-  explicit Log(const std::string& msg,
-               const std::string& type = Constants::kInfoLabel);
+  explicit Log(const std::string& msg, LogType type);
   Log() = delete;
   Log(const Log&) = delete;
   Log(Log&&) = delete;
