@@ -4,12 +4,12 @@
 namespace lib {
 
 class Constants {
-  public:
-    static constexpr const char* kInfoLabel = "INFO";
-    static constexpr const char* kWarningLabel = "WARNING";
-    static constexpr const char* kErrorLabel = "ERROR";
+ public:
+  static constexpr const char* kInfoLabel = "INFO";
+  static constexpr const char* kWarningLabel = "WARNING";
+  static constexpr const char* kErrorLabel = "ERROR";
 };
 
-} // namespace lib
+}  // namespace lib
 
-#endif // LOGGER_SRC_LIB_CONSTANTS_H_
+#endif  // LOGGER_SRC_LIB_CONSTANTS_H_
