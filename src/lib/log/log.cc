@@ -4,10 +4,6 @@ namespace lib {
 
 Log::Log(const std::string& msg, LogType type)
     : msg_(msg), type_(type), timestamp_(std::chrono::system_clock::now()) {
-  if (msg.empty()) {
-    throw std::invalid_argument("Log with empty message is not valid.");
-  }
-
   BuildInfoStr();
 }
 
