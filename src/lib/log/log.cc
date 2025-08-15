@@ -8,50 +8,15 @@ Log::Log(const std::string& msg, const std::string& lvl) {
   }
 
   msg_ = msg;
-  type_ = FromStrToLogType(lvl);
+  type_ = utils::FromStrToLogType(lvl);
   timestamp_ = std::chrono::system_clock::now();
 
   BuildInfoStr();
 }
 
-void Log::set_lvl(const std::string& lvl) { type_ = FromStrToLogType(lvl); }
-
-std::string Log::FromLogTypeToStr(LogType lvl) {
-  if (lvl == LogType::kInfo) {
-    return Constants::kInfoLabel;
-  } else if (lvl == LogType::kWarning) {
-    return Constants::kWarningLabel;
-  } else if (lvl == LogType::kError) {
-    return Constants::kErrorLabel;
-  } else {
-    throw std::invalid_argument("Unknown type of LogType.");
-  }
-}
-
-LogType Log::FromStrToLogType(const std::string& lvl_str) {
-  std::string lvl_upper = MakeUppercaseStr(lvl_str);
-  if (lvl_upper == Constants::kInfoLabel) {
-    return LogType::kInfo;
-  } else if (lvl_upper == Constants::kWarningLabel) {
-    return LogType::kWarning;
-  } else if (lvl_upper == Constants::kErrorLabel) {
-    return LogType::kError;
-  } else {
-    throw std::invalid_argument("Unknown LogType string: " + lvl_upper + ".");
-  }
-}
-
-std::string Log::MakeUppercaseStr(const std::string& other) {
-  std::string upper = other;
-  std::transform(upper.begin(), upper.end(), upper.begin(),
-                 [](char c) { return std::toupper(c); });
-
-  return upper;
-}
-
 void Log::BuildInfoStr() {
   std::string time = ConvertTimeToStr();
-  std::string type = FromLogTypeToStr(type_);
+  std::string type = utils::FromLogTypeToStr(type_);
 
   info_ = "[" + time + "] " + "[" + type + "] " + msg_;
 }
