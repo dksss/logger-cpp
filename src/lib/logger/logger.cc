@@ -23,6 +23,12 @@ void Logger::MakeLog(const std::string& msg, LogType type) {
   writer_->Write(log.get_info());
 }
 
+void Logger::MakeLog(const std::string& msg) {
+  std::lock_guard<std::mutex> lock(mutex_);
+  LogType type = min_type_;
+  MakeLog(msg, type);
+}
+
 void Logger::set_min_log_type(LogType type) {
   std::lock_guard<std::mutex> lock(mutex_);
   min_type_ = type;

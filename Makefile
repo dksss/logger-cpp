@@ -9,6 +9,13 @@ all:
 style:
 	clang-format -style=Google -i $(LIB_SRC) $(LIB_INC)
 
+dvi:
+
+
+test:
+
+
 clean:
+
 
 rebuild:

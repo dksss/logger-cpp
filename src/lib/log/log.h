@@ -1,3 +1,8 @@
+/**
+ * @file log.h
+ * @brief В этом файле описан класс логов
+ */
+
 #ifndef LOGGER_SRC_LIB_LOG_H_
 #define LOGGER_SRC_LIB_LOG_H_
 
@@ -9,6 +14,10 @@
 
 namespace lib {
 
+/**
+ * @class Log
+ * @brief Модель логов
+ */
 class Log {
   using created_at = std::chrono::system_clock::time_point;
 
@@ -21,15 +30,27 @@ class Log {
   Log& operator=(Log&&) = delete;
   ~Log() = default;
 
+  /**
+   * @brief Геттер информации о логе
+   * @return Текстовое представление лога вида: [DATE] [TIME] MSG
+   */
   const std::string& get_info() const { return info_; };
 
  private:
-  std::string msg_;
-  LogType type_;
-  created_at timestamp_;
-  std::string info_;
+  std::string msg_;       ///< Сообщение лога
+  LogType type_;          ///< Тип лога
+  created_at timestamp_;  ///< Время создания лога
+  std::string info_;  ///< Полный лог в текстовом виде
 
+  /**
+   * @brief Метод для создания текстового представления лога
+   * @throw std::invalid_argument если задан неподдерживаемый тип лога
+   */
   void BuildInfoStr();
+
+  /**
+   * @brief Метод для конвертации времени в строку
+   */
   const std::string ConvertTimeToStr();
 };
 
