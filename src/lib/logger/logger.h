@@ -72,6 +72,21 @@ class Logger {
    */
   LogType get_min_log_type() const;
 
+ protected:
+  /**
+   * @brief Конструктор логгера с возможностью внедрения
+   * собственного механизма записи
+   * @param filename Имя файла для записи логов (не может быть пустым)
+   * @param type_str Тип логов по умолчанию
+   * (логи с меньшим уровнем не будут записываться)
+   * @param writer Уникальный указатель на объект,
+   * реализующий интерфейс записи логов.
+   * @throw std::invalid_argument если filename пустой
+   */
+  Logger(const std::string& filename,
+         const std::string& type_str = Constants::kInfoLabel,
+         std::unique_ptr<LogWriterInterface> writer);
+
  private:
   /// Объект, записывающий логи
   std::unique_ptr<LogWriterInterface> writer_;

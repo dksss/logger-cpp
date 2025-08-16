@@ -36,4 +36,16 @@ void Logger::set_min_log_type(LogType type) {
 
 LogType Logger::get_min_log_type() const { return min_type_; }
 
+Logger::Logger(const std::string& filename,
+               const std::string& type_str = Constants::kInfoLabel,
+               std::unique_ptr<LogWriterInterface> writer)
+    : writer_(std::move(writer)),
+      log_file_(filename),
+      min_type_(utils::FromStrToLogType(type_str)),
+      mutex_() {
+  if (filename.empty()) {
+    throw std::invalid_argument("Log file must not be empty.");
+  }
+}
+
 }  // namespace lib

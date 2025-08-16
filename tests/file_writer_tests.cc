@@ -3,6 +3,14 @@
 namespace lib {
 namespace {
 
+class FileLogWriterTest : public testing::Test {
+ protected:
+  const std::string filename_ = "test_log.txt";
+
+  void SetUp() override { std::remove(filename_.c_str()); }
+  void TearDown() override { std::remove(filename_.c_str()); }
+};
+
 TEST_F(FileLogWriterTest, WritesLogToFileSuccessfullyTest) {
   FileLogWriter writer(filename_);
 
