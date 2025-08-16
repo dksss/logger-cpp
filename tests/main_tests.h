@@ -3,14 +3,24 @@
 
 #include <gtest/gtest.h>
 
+#include <cstdio>
+
 #include "../src/lib/common/log_type.h"
 #include "../src/lib/log/log.h"
+#include "../src/lib/writer/file_log_writer.h"
 
-class LogTest : public testing::Test {
+namespace lib {
+namespace {
+
+class FileLogWriterTest : public testing::Test {
  protected:
-  std::string valid_msg_ = "test";
-  std::string valid_msg2_ = "valid message";
-  std::string invalid_msg_ = "";
+  const std::string filename_ = "test_log.txt";
+
+  void SetUp() override { std::remove(filename_.c_str()); }
+  void TearDown() override { std::remove(filename_.c_str()); }
 };
+
+}  // namespace
+}  // namespace lib
 
 #endif  // LOGGER_TESTS_MAIN_TESTS_H_
