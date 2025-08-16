@@ -1,0 +1,11 @@
+PROJECT_NAME           = "LOGGER-CPP"
+OUTPUT_DIRECTORY       = docs
+INPUT                  = ./src
+RECURSIVE              = YES
+FILE_PATTERNS          = *.h
+GENERATE_HTML          = YES
+HTML_OUTPUT            = html
+GENERATE_LATEX         = NO
+EXTRACT_ALL            = YES
+WARN_IF_UNDOCUMENTED   = YES
+GENERATE_TREEVIEW      = YES
