@@ -22,6 +22,13 @@ class Log {
   using created_at = std::chrono::system_clock::time_point;
 
  public:
+  /**
+   * @brief Конструктор лога
+   * @param msg Сообщение лога
+   * @param type Тип важности лога
+   *
+   * Не проверяет корректность сообщения
+   */
   explicit Log(const std::string& msg, LogType type);
   Log() = delete;
   Log(const Log&) = delete;
