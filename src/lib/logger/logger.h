@@ -28,35 +28,51 @@ namespace lib {
 class Logger {
  public:
   /**
+   * @brief Конструктор логгера с указанием файла, начального типа лога
+   * и DI записывающего объекта
+   * @param writer Объект, записывающий логи
+   * @param filename Имя файла для записи логов (не может быть пустым)
+   * @param type Тип логов по умолчанию
+   * (логи с меньшим уровнем не будут записываться)
+   * @throw std::runtime_error если не удалось открыть файл
+   * @throw std::invalid_argument если не корректный литерал типа лога
+   */
+  Logger(std::unique_ptr<LogWriterInterface> writer,
+         const std::string& filename, LogType type);
+  /**
    * @brief Конструктор логгера с указанием файла и начального типа лога.
    * @param filename Имя файла для записи логов (не может быть пустым)
-   * @param type_str Тип логов по умолчанию
+   * @param type Тип логов по умолчанию
    * (логи с меньшим уровнем не будут записываться)
    * @throw std::invalid_argument если filename пустой
    */
-  Logger(const std::string& filename,
-         const std::string& type_str = Constants::kInfoLabel);
+  Logger(const std::string& filename, LogType type);
   Logger() = delete;
   Logger(const Logger&) = delete;
   Logger(Logger&&) = delete;
   Logger& operator=(const Logger&) = delete;
   Logger& operator=(Logger&&) = delete;
-  ~Logger() = default;
+  ~Logger() noexcept = default;
 
   /**
    * @brief Метод для создания лога с указанным уровнем важности.
    * @param msg Сообщение лога
    * @param type Уровень важности лога
+   * @throw std::runtime_error при ошибках записи в файл
+   * @throw std::invalid_argument при невалидном типе лога
    *
    * Если уровень важности type ниже минимального
-   * установленного, лог не создается.
+   * установленного, лог не создается
    */
   void MakeLog(const std::string& msg, LogType type);
 
   /**
    * @brief Метод для создания лога с уровнем важности по умолчанию.
    * @param msg Сообщение лога
-   * @throws std::runtime_error при ошибках записи в файл
+   * @throw std::runtime_error при ошибках записи в файл
+   * @throw std::invalid_argument при невалидном типе лога
+   *
+   * Устанавливает базовый для этого логгера уровень важности лога
    */
   void MakeLog(const std::string& msg);
 
@@ -64,6 +80,7 @@ class Logger {
    * @brief Сеттер минимального уровня важности логов
    * @param type Минимальный уровень лога, который будет записываться
    * @throws std::runtime_error при ошибках записи в файл
+   * @throw std::invalid_argument при невалидном типе лога
    */
   void set_min_log_type(LogType type);
   /**
@@ -71,21 +88,6 @@ class Logger {
    * @return Текущий уровень важности лога
    */
   LogType get_min_log_type() const;
-
- protected:
-  /**
-   * @brief Конструктор логгера с возможностью внедрения
-   * собственного механизма записи
-   * @param filename Имя файла для записи логов (не может быть пустым)
-   * @param type_str Тип логов по умолчанию
-   * (логи с меньшим уровнем не будут записываться)
-   * @param writer Уникальный указатель на объект,
-   * реализующий интерфейс записи логов.
-   * @throw std::invalid_argument если filename пустой
-   */
-  Logger(const std::string& filename,
-         const std::string& type_str = Constants::kInfoLabel,
-         std::unique_ptr<LogWriterInterface> writer);
 
  private:
   /// Объект, записывающий логи
@@ -96,6 +98,13 @@ class Logger {
   LogType min_type_;
   /// Мьютекс для защиты записи логов в многопоточной среде
   std::mutex mutex_;
+
+  /**
+   * @brief Проверяет, является ли значение типа лога валидным
+   * @param type Уровень лога для проверки
+   * @return true, если тип лога валиден; false в противном случае
+   */
+  bool IsValidType(LogType type);
 };
 
 }  // namespace lib

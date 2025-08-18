@@ -45,6 +45,6 @@ coverage:
 	@open report/index.html
 
 clean:
-	@rm -rf ./docs/html ./report ./RESULT_VALGRIND.txt
+	@rm -rf ./docs/html ./report ./RESULT_VALGRIND.txt ./test
 
 rebuild:

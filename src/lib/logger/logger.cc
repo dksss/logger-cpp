@@ -2,49 +2,55 @@
 
 namespace lib {
 
-Logger::Logger(const std::string& filename, const std::string& type_str)
-    : writer_(std::make_unique<FileLogWriter>(filename)),
+Logger::Logger(std::unique_ptr<LogWriterInterface> writer,
+               const std::string& filename, LogType type)
+    : writer_(std::move(writer)),
       log_file_(filename),
-      min_type_(utils::FromStrToLogType(type_str)),
+      min_type_(type),
       mutex_() {
-  if (filename.empty()) {
-    throw std::invalid_argument("Log file must not be empty.");
-  }
+  if (!IsValidType(type)) {
+    throw std::invalid_argument("Invalid type.");
+  };
 }
+
+Logger::Logger(const std::string& filename, LogType type)
+    : Logger(std::make_unique<FileLogWriter>(filename), filename, type) {}
 
 void Logger::MakeLog(const std::string& msg, LogType type) {
   std::lock_guard<std::mutex> lock(mutex_);
 
-  if (type < min_type_) {
-    return;
+  if (!IsValidType(type)) {
+    throw std::invalid_argument("Invalid type of log.");
   }
 
-  Log log{msg, type};
-  writer_->Write(log.get_info());
+  if (type >= min_type_) {
+    Log log{msg, type};
+    writer_->Write(log.get_info());
+  }
 }
 
 void Logger::MakeLog(const std::string& msg) {
-  std::lock_guard<std::mutex> lock(mutex_);
   LogType type = min_type_;
   MakeLog(msg, type);
 }
 
 void Logger::set_min_log_type(LogType type) {
   std::lock_guard<std::mutex> lock(mutex_);
-  min_type_ = type;
+  if (IsValidType(type)) {
+    min_type_ = type;
+  }
 }
 
 LogType Logger::get_min_log_type() const { return min_type_; }
 
-Logger::Logger(const std::string& filename,
-               const std::string& type_str = Constants::kInfoLabel,
-               std::unique_ptr<LogWriterInterface> writer)
-    : writer_(std::move(writer)),
-      log_file_(filename),
-      min_type_(utils::FromStrToLogType(type_str)),
-      mutex_() {
-  if (filename.empty()) {
-    throw std::invalid_argument("Log file must not be empty.");
+bool Logger::IsValidType(LogType type) {
+  switch (type) {
+    case LogType::kInfo:
+    case LogType::kWarning:
+    case LogType::kError:
+      return true;
+    default:
+      return false;
   }
 }
 
