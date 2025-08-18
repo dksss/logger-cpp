@@ -13,9 +13,15 @@ TEST_DIR := ./tests
 TEST_SRC := $(TEST_DIR)/*.cc
 TEST_LIBS := -lgtest -lgtest_main
 
-.PHONY: all style docs clean open_docs
+BUILD_DIR := ./build
+
+.PHONY: all style docs clean open_docs test coverage valgrind
 
 all:
+
+logger.so: $(LIB_SRC) $(LIB_INC)
+	@mkdir -p $(BUILD_DIR)
+	$(GXX) $(GXX_FLAGS) -fPIC -shared -o $(BUILD_DIR)/$@ $(LIB_SRC)
 
 style:
 	clang-format -style=Google -i $(LIB_SRC) $(LIB_INC) $(TEST_SRC) $(TEST_DIR)/*.h
@@ -45,6 +51,6 @@ coverage:
 	@open report/index.html
 
 clean:
-	@rm -rf ./docs/html ./report ./RESULT_VALGRIND.txt ./test
+	@rm -rf ./docs/html ./report ./RESULT_VALGRIND.txt ./build ./test
 
-rebuild:
+rebuild: clean all
