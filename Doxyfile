@@ -1,6 +1,6 @@
 PROJECT_NAME           = "LOGGER-CPP"
 OUTPUT_DIRECTORY       = docs
-INPUT                  = ./src
+INPUT                  = ./src/lib
 RECURSIVE              = YES
 FILE_PATTERNS          = *.h
 GENERATE_HTML          = YES

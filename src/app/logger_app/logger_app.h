@@ -20,11 +20,13 @@ class App {
   App& operator=(App&&) = delete;
   ~App();
 
-  int Run();
+  void Run();
 
  private:
-  lib::Logger logger_;
+  static constexpr const char* kExitCmd = "q";
+
   LogQueue queue_;
+  lib::Logger logger_;
   std::thread writer_thread_;
 
   void WriterLoop();

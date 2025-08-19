@@ -19,15 +19,20 @@ BUILD_DIR := ./build
 
 .PHONY: all style docs clean open_docs test coverage valgrind
 
-all:
+all: app
 
-logger.so: $(LIB_SRC) $(LIB_INC)
+app: liblogger.so $(APP_SRC) $(APP_INC)
+	@mkdir -p $(BUILD_DIR)
+	$(GXX) $(GXX_FLAGS) -I./src/lib -I./src/app -o $(BUILD_DIR)/$@ $(APP_SRC) ./src/app/main.cc \
+	-L$(BUILD_DIR) -Wl,-rpath=$(BUILD_DIR) -llogger
+
+liblogger.so: $(LIB_SRC) $(LIB_INC)
 	@mkdir -p $(BUILD_DIR)
 	$(GXX) $(GXX_FLAGS) -fPIC -shared -o $(BUILD_DIR)/$@ $(LIB_SRC)
 
-style:
-	clang-format -style=Google -i $(LIB_SRC) $(LIB_INC) $(TEST_SRC) $(TEST_DIR)/*.h \
-	$(APP_SRC) $(APP_INC)
+check_style:
+	@clang-format -style=Google -n $(LIB_SRC) $(LIB_INC) $(TEST_SRC) $(TEST_DIR)/*.h \
+	$(APP_SRC) $(APP_INC) ./src/app/main.cc
 
 docs:
 	doxygen $(DOXYFILE)
@@ -54,6 +59,6 @@ coverage:
 	@open report/index.html
 
 clean:
-	@rm -rf ./docs/html ./report ./RESULT_VALGRIND.txt ./build ./test
+	@rm -rf ./docs/html ./report ./RESULT_VALGRIND.txt ./build ./test ./*.txt
 
 rebuild: clean all

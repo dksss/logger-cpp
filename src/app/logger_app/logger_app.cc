@@ -3,18 +3,18 @@
 namespace app {
 
 App::App(const std::string& logfile, lib::LogType type)
-    : logger_(logfile, type), queue_() {}
+    : queue_(), logger_(logfile, type) {}
 
 App::~App() {
+  queue_.Stop();
   if (writer_thread_.joinable()) {
     writer_thread_.join();
   }
 }
 
-int App::Run() {
+void App::Run() {
   writer_thread_ = std::thread(&App::WriterLoop, this);
   InputLoop();
-  return 0;
 }
 
 void App::WriterLoop() {
@@ -32,21 +32,21 @@ void App::WriterLoop() {
 
 void App::InputLoop() {
   std::cout
-      << "Enter message (or 'q' to exit app).\n"
-      << "After entering message enter Log Level: INFO | WARNING | ERROR.\n"
+      << "Enter message (or '" << kExitCmd << "' to exit).\n"
+      << "After entering message, enter Log Level: INFO | WARNING | ERROR.\n"
       << "Empty Log Level = use default Log Level ("
       << lib::utils::FromLogTypeToStr(logger_.get_min_log_type()) << ").\n";
 
-  bool running = true;
-  while (running) {
+  while (true) {
     std::string message = ScanMessage();
-    if (message == "q") {
-      running = false;
-      break;
+    if (message == kExitCmd) break;
+
+    if (message.empty()) {
+      std::cerr << "Empty message skipped.\n";
+      continue;
     }
 
     lib::LogType type = ScanType();
-
     queue_.Push({message, type});
   }
 
@@ -58,13 +58,18 @@ std::string App::ScanMessage() {
   std::cout << "\n> Message: " << std::flush;
   std::getline(std::cin, message);
 
-  return message;
+  return (std::cin ? message : kExitCmd);
 }
 
 lib::LogType App::ScanType() {
   std::string level;
-  std::cout << "> Log Level [INFO|WARNING|ERROR]: " << std::flush;
-  std::getline(std::cin, level);
+  std::cout << "> Log Level [INFO|WARNING|ERROR] (default = "
+            << lib::utils::FromLogTypeToStr(logger_.get_min_log_type())
+            << "): " << std::flush;
+
+  if (!std::getline(std::cin, level)) {
+    return logger_.get_min_log_type();
+  }
 
   lib::LogType type = logger_.get_min_log_type();
   if (!level.empty()) {
