@@ -12,8 +12,8 @@ void LogQueue::Push(const LogMessage& msg) {
 
 bool LogQueue::Pop(LogMessage& msg) {
   std::unique_lock<std::mutex> lock(mutex_);
-  cond_.wait(lock, [&]{ return !queue_.empty() || is_stop_; });
-  
+  cond_.wait(lock, [&] { return !queue_.empty() || is_stop_; });
+
   if (is_stop_ && queue_.empty()) {
     return false;
   }
@@ -31,4 +31,4 @@ void LogQueue::Stop() {
   cond_.notify_all();
 }
 
-} // namespace app
+}  // namespace app

@@ -8,10 +8,10 @@
 namespace app {
 
 struct LogMessage {
-  std::string msg;
+  std::string text;
   lib::LogType type;
 };
 
-} // app
+}  // namespace app
 
-#endif // LOGGER_SRC_APP_LOG_MESSAGE_H_
+#endif  // LOGGER_SRC_APP_LOG_MESSAGE_H_

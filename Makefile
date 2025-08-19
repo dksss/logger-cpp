@@ -6,6 +6,8 @@ GXX_FLAGS := $(FLAGS) --std=c++17
 
 LIB_SRC := ./src/lib/*/*.cc
 LIB_INC := ./src/lib/*/*.h
+APP_SRC := ./src/app/*/*.cc
+APP_INC := ./src/app/*/*.h
 
 DOXYFILE := Doxyfile
 
@@ -24,12 +26,13 @@ logger.so: $(LIB_SRC) $(LIB_INC)
 	$(GXX) $(GXX_FLAGS) -fPIC -shared -o $(BUILD_DIR)/$@ $(LIB_SRC)
 
 style:
-	clang-format -style=Google -i $(LIB_SRC) $(LIB_INC) $(TEST_SRC) $(TEST_DIR)/*.h
+	clang-format -style=Google -i $(LIB_SRC) $(LIB_INC) $(TEST_SRC) $(TEST_DIR)/*.h \
+	$(APP_SRC) $(APP_INC)
 
 docs:
 	doxygen $(DOXYFILE)
 
-open_docs:
+open_docs: docs
 	open ./docs/html/index.html
 
 test:

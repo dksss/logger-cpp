@@ -1,9 +1,9 @@
 #ifndef LOGGER_SRC_APP_LOG_QUEUE_LOG_QUEUE_H_
 #define LOGGER_SRC_APP_LOG_QUEUE_LOG_QUEUE_H_
 
-#include <queue>
-#include <mutex>
 #include <condition_variable>
+#include <mutex>
+#include <queue>
 
 #include "../message/log_message.h"
 
@@ -22,6 +22,6 @@ class LogQueue {
   bool is_stop_ = false;
 };
 
-} // namespace app
+}  // namespace app
 
-#endif // LOGGER_SRC_APP_LOG_QUEUE_LOG_QUEUE_H_
+#endif  // LOGGER_SRC_APP_LOG_QUEUE_LOG_QUEUE_H_
