@@ -2,7 +2,6 @@
 #define LOGGER_SRC_APP_LOG_MESSAGE_H_
 
 #include <string>
-#include <optional>
 
 #include "../../lib/common/log_type.h"
 
@@ -10,7 +9,7 @@ namespace app {
 
 struct LogMessage {
   std::string msg;
-  std::optional<lib::LogType> type;
+  lib::LogType type;
 };
 
 } // app
